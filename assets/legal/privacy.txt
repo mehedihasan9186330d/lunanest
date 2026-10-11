@@ -1,0 +1,28 @@
+LunaNest Privacy Policy  (TEMPLATE — review with a lawyer and complete the [PLACEHOLDERS] before release)
+
+Last updated: [DATE]
+Publisher: [LEGAL NAME / COMPANY], [ADDRESS]
+Contact: [SUPPORT EMAIL]
+
+1. What stays on your device
+Favorites, recently played sounds, saved mixes, settings and downloaded audio are stored only on your device. LunaNest has no user accounts.
+
+2. Data we collect
+LunaNest itself does not collect your name, email, location, contacts, microphone or health data, and contains no advertising or analytics SDKs.
+
+3. Subscriptions
+If you buy Premium, the purchase is processed by Google Play or the Apple App Store. LunaNest uses RevenueCat (RevenueCat, Inc.) to verify your subscription. RevenueCat receives an anonymous app user ID, purchase/subscription status and device/store information needed to provide entitlement checks. See https://www.revenuecat.com/privacy.
+
+4. Network requests
+Streamed or downloaded sounds are fetched over HTTPS from [AUDIO HOST]. The host may see your IP address and request metadata, as with any web request.
+
+5. Your choices
+Settings → "Erase all local data" removes everything stored by LunaNest on your device. You can cancel subscriptions in your store account settings.
+
+6. Children
+LunaNest is not directed to children under 13 [REVIEW against your target audience and store family policies].
+
+7. Changes
+We will update this policy in the app and on [WEBSITE URL] when it changes.
+
+[If you add analytics, crash reporting, ads or accounts, this policy and the store privacy forms MUST be updated first.]

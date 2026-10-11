@@ -1,0 +1,29 @@
+{
+  "categories": [
+    {"id": "rain", "title": "Rain & Thunder"},
+    {"id": "ocean", "title": "Ocean"},
+    {"id": "nature", "title": "Wind & Nature"},
+    {"id": "noise", "title": "Noise"},
+    {"id": "cozy", "title": "Cozy"}
+  ],
+  "sounds": [
+    {"id": "gentle_rain", "title": "Gentle Rain", "category": "rain", "asset": "assets/audio/gentle_rain.wav", "premium": false, "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"},
+    {"id": "heavy_rain", "title": "Heavy Rain", "category": "rain", "asset": "assets/audio/heavy_rain.wav", "premium": true, "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"},
+    {"id": "distant_thunder", "title": "Distant Thunder", "category": "rain", "asset": "assets/audio/distant_thunder.wav", "premium": true, "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"},
+    {"id": "ocean_waves", "title": "Calm Ocean Waves", "category": "ocean", "asset": "assets/audio/ocean_waves.wav", "premium": false, "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"},
+    {"id": "ocean_night", "title": "Ocean at Night", "category": "ocean", "asset": "assets/audio/ocean_night.wav", "premium": true, "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"},
+    {"id": "soft_wind", "title": "Soft Wind", "category": "nature", "asset": "assets/audio/soft_wind.wav", "premium": false, "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"},
+    {"id": "forest_stream", "title": "Gentle Stream", "category": "nature", "asset": "assets/audio/forest_stream.wav", "premium": true, "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"},
+    {"id": "night_crickets", "title": "Night Crickets", "category": "nature", "asset": "assets/audio/night_crickets.wav", "premium": true, "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"},
+    {"id": "white_noise", "title": "White Noise", "category": "noise", "asset": "assets/audio/white_noise.wav", "premium": false, "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"},
+    {"id": "pink_noise", "title": "Pink Noise", "category": "noise", "asset": "assets/audio/pink_noise.wav", "premium": false, "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"},
+    {"id": "brown_noise", "title": "Brown Noise", "category": "noise", "asset": "assets/audio/brown_noise.wav", "premium": false, "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"},
+    {"id": "fireplace", "title": "Fireplace", "category": "cozy", "asset": "assets/audio/fireplace.wav", "premium": false, "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"}
+  ],
+  "presets": [
+    {"id": "preset_ocean_dreams", "name": "Ocean Dreams", "layers": [{"soundId": "ocean_waves", "volume": 0.8}, {"soundId": "soft_wind", "volume": 0.35}]},
+    {"id": "preset_cozy_cabin", "name": "Cozy Cabin", "layers": [{"soundId": "gentle_rain", "volume": 0.6}, {"soundId": "fireplace", "volume": 0.7}]},
+    {"id": "preset_rainy_night", "name": "Rainy Night", "layers": [{"soundId": "gentle_rain", "volume": 0.8}, {"soundId": "distant_thunder", "volume": 0.45}, {"soundId": "soft_wind", "volume": 0.3}]},
+    {"id": "preset_summer_night", "name": "Summer Night", "layers": [{"soundId": "night_crickets", "volume": 0.6}, {"soundId": "forest_stream", "volume": 0.6}, {"soundId": "soft_wind", "volume": 0.3}]}
+  ]
+}

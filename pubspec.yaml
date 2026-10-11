@@ -1,0 +1,38 @@
+name: lunanest
+description: LunaNest - Sleep & Relax. Find your calm. Drift into sleep.
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+# NOTE: version ranges were chosen from knowledge of the packages' APIs and have NOT
+# been resolved in the authoring environment (no Flutter/pub access there). The first
+# CI run performs `flutter pub get`; if resolution fails, see docs/TROUBLESHOOTING.md.
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1
+  go_router: ^14.2.0
+  just_audio: ^0.9.40
+  audio_service: ^0.18.15
+  audio_session: ^0.1.21
+  shared_preferences: ^2.2.3
+  path_provider: ^2.1.3
+  dio: ^5.4.3
+  purchases_flutter: ^8.0.0   # 8.x: purchasePackage returns CustomerInfo (9.x changed this)
+  url_launcher: ^6.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/catalog.json
+    - assets/audio/
+    - assets/legal/

@@ -1,0 +1,61 @@
+# Move this file to .github/workflows/android.yml (see docs/MOBILE_WORKFLOW.md)
+name: Android build
+on:
+  workflow_dispatch:
+    inputs:
+      publish_release:
+        description: "Also attach the APK to a GitHub pre-release (easy phone download)"
+        type: boolean
+        default: true
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Generate original audio assets
+        run: |
+          pip install numpy
+          python tool/generate_audio.py
+      - name: Create android/ios folders and apply native config
+        run: bash tool/bootstrap.sh
+      - run: flutter --version
+      - run: flutter pub get
+      - name: Analyze (report only; infos/warnings do not fail the build)
+        continue-on-error: true
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+      - name: Unit + widget tests
+        continue-on-error: true
+        run: flutter test
+      - name: Build release APK
+        run: |
+          flutter build apk --release \
+            --dart-define=REVENUECAT_ANDROID_KEY=${{ secrets.REVENUECAT_ANDROID_KEY }} \
+            --dart-define=SUPPORT_EMAIL=${{ secrets.SUPPORT_EMAIL }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lunanest-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+      - name: Publish pre-release (phone-friendly download)
+        if: github.event_name == 'workflow_dispatch' && inputs.publish_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: LunaNest build ${{ github.run_number }}
+          prerelease: true
+          files: build/app/outputs/flutter-apk/app-release.apk

@@ -1,0 +1,27 @@
+# Move this file to .github/workflows/ios.yml (see docs/MOBILE_WORKFLOW.md)
+# Compiles the iOS app WITHOUT code signing to catch build errors. Producing an
+# installable/uploadable IPA requires an Apple Developer account ($99/yr) and signing
+# assets; see APP_STORE_RELEASE_CHECKLIST.md. macOS runners are billed at a higher
+# rate than Linux on private repos.
+name: iOS compile check
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - run: |
+          pip install numpy
+          python tool/generate_audio.py
+      - run: bash tool/bootstrap.sh
+      - run: flutter pub get
+      - run: flutter build ios --release --no-codesign
