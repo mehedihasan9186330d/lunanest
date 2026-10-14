@@ -91,7 +91,7 @@ class AudioEngine extends ChangeNotifier {
   String? get nowPlayingTitle {
     if (_layers.isEmpty) return null;
     if (_layers.length == 1) return _layers.values.first.sound.title;
-    return 'Mix · ${_layers.length} sounds';
+    return 'Sound mix';
   }
 
   String? get nowPlayingSubtitle {

@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ import 'package:lunanest/ui/timer_ring.dart';
 Sound _s(String id, String cat) => Sound(id: id, title: id, categoryId: cat, assetPath: 'x.wav');
 
 void main() {
+  catalogSceneTests();
   test('hash01 stays in [0,1) and is deterministic', () {
     for (var i = 0; i < 500; i++) {
       final v = hash01(i, 3);
@@ -68,5 +71,23 @@ void main() {
   testWidgets('TimerRing shows its child', (tester) async {
     await tester.pumpWidget(const MaterialApp(home: Scaffold(body: TimerRing(progress: 0.4, child: Text('12:00')))));
     expect(find.text('12:00'), findsOneWidget);
+  });
+}
+
+void catalogSceneTests() {
+  test('every catalog sound maps to a scene that fits its category', () {
+    final c = jsonDecode(File('assets/catalog.json').readAsStringSync()) as Map<String, dynamic>;
+    const allowed = {
+      'rain': {SceneKind.rain, SceneKind.storm},
+      'ocean': {SceneKind.ocean},
+      'nature': {SceneKind.wind, SceneKind.river, SceneKind.forest},
+      'noise': {SceneKind.noise},
+      'cozy': {SceneKind.fire, SceneKind.noise},
+    };
+    for (final s in c['sounds'] as List) {
+      final m = s as Map<String, dynamic>;
+      final sound = Sound(id: m['id'] as String, title: m['title'] as String, categoryId: m['category'] as String, assetPath: m['asset'] as String);
+      expect(allowed[sound.categoryId], contains(sceneForSound(sound).kind), reason: '${sound.id} scene does not fit ${sound.categoryId}');
+    }
   });
 }

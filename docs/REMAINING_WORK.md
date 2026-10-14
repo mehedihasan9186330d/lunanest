@@ -25,3 +25,9 @@
 - Free-tier limits (3 layers, 3 mixes, 3 downloads) and premium limits (6 / 50 / unlimited) are product guesses.
 - Light theme is functional but less polished than the dark theme.
 - Android process-kill/background restrictions on some OEM devices (Xiaomi, Huawei…) may stop playback; needs real-device testing.
+
+## Open-source license notices (decision needed before release)
+The in-app "Open-source licenses" screen was removed (by request). Most packages used (Flutter, Riverpod, go_router, just_audio,
+audio_service, dio, ...) are BSD/MIT/Apache-licensed, and those licenses generally require their copyright notices to accompany
+distributed copies. Removing the screen does not remove that obligation. Recommended: publish the notices somewhere users can reach
+(your website / Terms page / store listing). I can generate a notices file for you; this is not legal advice.

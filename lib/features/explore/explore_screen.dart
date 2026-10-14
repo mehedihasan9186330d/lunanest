@@ -69,7 +69,6 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                           tileColor: Theme.of(context).colorScheme.surface,
                           leading: Icon(CategoryStyle.of(c.id).icon),
                           title: Text(c.title),
-                          subtitle: Text('${catalog.inCategory(c.id).length} sounds'),
                           trailing: const Icon(Icons.chevron_right),
                           onTap: () => context.go('/explore/category/${c.id}'),
                         ),

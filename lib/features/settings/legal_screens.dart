@@ -41,11 +41,6 @@ class AboutScreen extends StatelessWidget {
         const SizedBox(height: 24),
         const Text('LunaNest is a relaxation aid. It is not a medical device and does not diagnose, treat or cure any condition, '
             'including sleep disorders. If you have trouble sleeping, talk to a healthcare professional.'),
-        const SizedBox(height: 16),
-        OutlinedButton(
-          onPressed: () => showLicensePage(context: context, applicationName: 'LunaNest'),
-          child: const Text('Open-source licenses'),
-        ),
       ]),
     );
   }

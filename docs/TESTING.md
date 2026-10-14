@@ -6,6 +6,7 @@
 - `test/local_store_test.dart` — persistence, corruption tolerance, erase.
 - `test/widget_test.dart` — SoundTile, premium lock, favorite toggle, paywall with billing unconfigured.
 - `test/scene_test.dart` — scene mapping, every scene paints without throwing (incl. lightning frames), SceneView start/stop, TimerRing.
+- `test/catalog_integrity_test.dart` — unique ids, rich categories, every sound free/CC0/has a generator entry, presets valid.
 - `test/feature_gates_test.dart` — launch state locks nothing; gates only act when switched on.
 - `test/routine_and_prefs_test.dart` — bedtime routine, volume preferences, one-time notification prompt, and a check that **every catalog sound is free and has audio**.
 - `integration_test/app_test.dart` — launch → explore → play (needs a device/emulator: `flutter test integration_test`).
@@ -49,3 +50,11 @@ Android and iOS:
 - [ ] Bedtime routine: set up on Home, tap Start → mix plays and the timer ring counts down.
 - [ ] Master volume and per-sound volumes are remembered after force-closing the app.
 - [ ] Next/Previous are intentionally absent (LunaNest has no playlist/queue).
+
+## Listening checklist for the expanded sound library (manual, on your phone with headphones and speaker)
+- [ ] Rain family: no sharp "static" or ticking; drizzle/window/leaves feel soft at a low bedtime volume.
+- [ ] Thunder sounds: rumble is smooth, the crack in Close Thunder is not startling at low volume.
+- [ ] Fire sounds: crackles audible but gentle.
+- [ ] Loops: listen at the 20 s loop point of 5-6 sounds; no click or jump.
+- [ ] Frogs, Birds at Dusk, Bamboo, Clock Tick, Page Turning: not irritating over 10+ minutes (these are stylised; tell me which to retune).
+- [ ] Loudness: switching between sounds does not cause large volume jumps.

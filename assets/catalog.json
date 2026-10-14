@@ -47,6 +47,70 @@
       "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
     },
     {
+      "id": "soft_drizzle",
+      "title": "Soft Drizzle",
+      "category": "rain",
+      "asset": "assets/audio/soft_drizzle.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "rain_on_window",
+      "title": "Rain on Window",
+      "category": "rain",
+      "asset": "assets/audio/rain_on_window.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "rain_on_leaves",
+      "title": "Rain on Leaves",
+      "category": "rain",
+      "asset": "assets/audio/rain_on_leaves.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "light_shower",
+      "title": "Light Shower",
+      "category": "rain",
+      "asset": "assets/audio/light_shower.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "forest_rain",
+      "title": "Forest Rain",
+      "category": "rain",
+      "asset": "assets/audio/forest_rain.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "rain_soft_wind",
+      "title": "Rain with Soft Wind",
+      "category": "rain",
+      "asset": "assets/audio/rain_soft_wind.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "thunderstorm",
+      "title": "Thunderstorm",
+      "category": "rain",
+      "asset": "assets/audio/thunderstorm.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "close_thunder",
+      "title": "Close Thunder",
+      "category": "rain",
+      "asset": "assets/audio/close_thunder.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
       "id": "ocean_waves",
       "title": "Calm Ocean Waves",
       "category": "ocean",
@@ -63,10 +127,90 @@
       "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
     },
     {
+      "id": "soft_beach_waves",
+      "title": "Soft Beach Waves",
+      "category": "ocean",
+      "asset": "assets/audio/soft_beach_waves.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "deep_ocean",
+      "title": "Deep Ocean",
+      "category": "ocean",
+      "asset": "assets/audio/deep_ocean.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "tide_pool",
+      "title": "Tide Pool",
+      "category": "ocean",
+      "asset": "assets/audio/tide_pool.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "rocky_shore",
+      "title": "Rocky Shore",
+      "category": "ocean",
+      "asset": "assets/audio/rocky_shore.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "distant_surf",
+      "title": "Distant Surf",
+      "category": "ocean",
+      "asset": "assets/audio/distant_surf.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "underwater_soft",
+      "title": "Underwater Soft",
+      "category": "ocean",
+      "asset": "assets/audio/underwater_soft.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "night_tide",
+      "title": "Night Tide",
+      "category": "ocean",
+      "asset": "assets/audio/night_tide.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
       "id": "soft_wind",
       "title": "Soft Wind",
       "category": "nature",
       "asset": "assets/audio/soft_wind.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "strong_wind",
+      "title": "Strong Wind",
+      "category": "nature",
+      "asset": "assets/audio/strong_wind.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "wind_in_trees",
+      "title": "Wind in Trees",
+      "category": "nature",
+      "asset": "assets/audio/wind_in_trees.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "mountain_breeze",
+      "title": "Mountain Breeze",
+      "category": "nature",
+      "asset": "assets/audio/mountain_breeze.wav",
       "premium": false,
       "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
     },
@@ -79,10 +223,58 @@
       "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
     },
     {
+      "id": "creek",
+      "title": "Creek",
+      "category": "nature",
+      "asset": "assets/audio/creek.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "river_rapids",
+      "title": "River Rapids",
+      "category": "nature",
+      "asset": "assets/audio/river_rapids.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
       "id": "night_crickets",
       "title": "Night Crickets",
       "category": "nature",
       "asset": "assets/audio/night_crickets.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "frogs_night",
+      "title": "Frogs at Night",
+      "category": "nature",
+      "asset": "assets/audio/frogs_night.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "birds_dusk",
+      "title": "Birds at Dusk",
+      "category": "nature",
+      "asset": "assets/audio/birds_dusk.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "bamboo_forest",
+      "title": "Bamboo Forest",
+      "category": "nature",
+      "asset": "assets/audio/bamboo_forest.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "leaves_rustling",
+      "title": "Leaves Rustling",
+      "category": "nature",
+      "asset": "assets/audio/leaves_rustling.wav",
       "premium": false,
       "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
     },
@@ -111,10 +303,114 @@
       "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
     },
     {
+      "id": "soft_fan",
+      "title": "Soft Fan",
+      "category": "noise",
+      "asset": "assets/audio/soft_fan.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "air_conditioner",
+      "title": "Air Conditioner",
+      "category": "noise",
+      "asset": "assets/audio/air_conditioner.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "soft_hiss",
+      "title": "Soft Hiss",
+      "category": "noise",
+      "asset": "assets/audio/soft_hiss.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "deep_rumble",
+      "title": "Deep Rumble",
+      "category": "noise",
+      "asset": "assets/audio/deep_rumble.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "violet_noise",
+      "title": "Violet Noise",
+      "category": "noise",
+      "asset": "assets/audio/violet_noise.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "cabin_noise",
+      "title": "Cabin Noise",
+      "category": "noise",
+      "asset": "assets/audio/cabin_noise.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
       "id": "fireplace",
       "title": "Fireplace",
       "category": "cozy",
       "asset": "assets/audio/fireplace.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "soft_crackling_fire",
+      "title": "Soft Crackling Fire",
+      "category": "cozy",
+      "asset": "assets/audio/soft_crackling_fire.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "campfire",
+      "title": "Campfire",
+      "category": "cozy",
+      "asset": "assets/audio/campfire.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "soft_room_tone",
+      "title": "Soft Room Tone",
+      "category": "cozy",
+      "asset": "assets/audio/soft_room_tone.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "clock_tick_soft",
+      "title": "Soft Clock Tick",
+      "category": "cozy",
+      "asset": "assets/audio/clock_tick_soft.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "page_turning_ambient",
+      "title": "Page Turning",
+      "category": "cozy",
+      "asset": "assets/audio/page_turning_ambient.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "warm_indoor_hum",
+      "title": "Warm Indoor Hum",
+      "category": "cozy",
+      "asset": "assets/audio/warm_indoor_hum.wav",
+      "premium": false,
+      "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
+    },
+    {
+      "id": "blanket_rustle",
+      "title": "Blanket Rustle",
+      "category": "cozy",
+      "asset": "assets/audio/blanket_rustle.wav",
       "premium": false,
       "license": "CC0-1.0 (synthesized by tool/generate_audio.py)"
     }
@@ -181,6 +477,78 @@
         {
           "soundId": "soft_wind",
           "volume": 0.3
+        }
+      ]
+    },
+    {
+      "id": "preset_stormy_night",
+      "name": "Stormy Night",
+      "layers": [
+        {
+          "soundId": "rain_on_window",
+          "volume": 0.7
+        },
+        {
+          "soundId": "close_thunder",
+          "volume": 0.35
+        },
+        {
+          "soundId": "soft_room_tone",
+          "volume": 0.3
+        }
+      ]
+    },
+    {
+      "id": "preset_beach_evening",
+      "name": "Beach Evening",
+      "layers": [
+        {
+          "soundId": "soft_beach_waves",
+          "volume": 0.75
+        },
+        {
+          "soundId": "birds_dusk",
+          "volume": 0.35
+        },
+        {
+          "soundId": "soft_wind",
+          "volume": 0.25
+        }
+      ]
+    },
+    {
+      "id": "preset_campfire_night",
+      "name": "Campfire Night",
+      "layers": [
+        {
+          "soundId": "campfire",
+          "volume": 0.7
+        },
+        {
+          "soundId": "night_crickets",
+          "volume": 0.4
+        },
+        {
+          "soundId": "mountain_breeze",
+          "volume": 0.3
+        }
+      ]
+    },
+    {
+      "id": "preset_quiet_study",
+      "name": "Quiet Study",
+      "layers": [
+        {
+          "soundId": "soft_room_tone",
+          "volume": 0.5
+        },
+        {
+          "soundId": "clock_tick_soft",
+          "volume": 0.4
+        },
+        {
+          "soundId": "soft_drizzle",
+          "volume": 0.4
         }
       ]
     }

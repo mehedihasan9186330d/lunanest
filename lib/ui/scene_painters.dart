@@ -39,7 +39,7 @@ void paintScene(Canvas c, Size s, double t, SceneLayer l) {
     case SceneKind.noise:
       _noise(c, s, t, o);
     case SceneKind.wind:
-      _wind(c, s, t, o);
+      _wind(c, s, t, o, k);
   }
 }
 
@@ -287,12 +287,13 @@ void _noise(Canvas c, Size s, double t, double o) {
   }
 }
 
-void _wind(Canvas c, Size s, double t, double o) {
+void _wind(Canvas c, Size s, double t, double o, double intensity) {
   final p = Paint()
     ..style = PaintingStyle.stroke
     ..strokeCap = StrokeCap.round
     ..strokeWidth = 1.6;
-  for (var i = 0; i < 9; i++) {
+  final wisps = (6 + 8 * intensity).round();
+  for (var i = 0; i < wisps; i++) {
     final y = s.height * (0.15 + 0.7 * hash01(i, 1));
     final x0 = ((t * (0.04 + 0.06 * hash01(i, 2)) + hash01(i, 3)) % 1.0) * (s.width + 280) - 200;
     p.color = _a(_ice, 0.10 + 0.12 * hash01(i, 4), o);

@@ -40,7 +40,7 @@ class MixerScreen extends ConsumerWidget {
       ),
       body: CatalogBuilder(builder: (context, catalog) {
         return ListView(padding: const EdgeInsets.fromLTRB(16, 0, 16, 24), children: [
-          Text('Layer up to ${actions.maxLayers} sounds. Each has its own volume.', style: Theme.of(context).textTheme.bodyMedium),
+          Text('Layer sounds together. Each one has its own volume.', style: Theme.of(context).textTheme.bodyMedium),
           const SizedBox(height: 12),
           Reveal(child: _ScenePreview(engine: engine)),
           const SizedBox(height: 14),
@@ -222,7 +222,7 @@ class _ScenePreview extends StatelessWidget {
       container: true,
       label: layers.isEmpty
           ? 'Soundscape preview, empty'
-          : 'Soundscape preview, ${layers.length} layers, ${engine.isPlaying ? 'playing' : 'paused'}',
+          : 'Soundscape preview, ${engine.isPlaying ? 'playing' : 'paused'}',
       child: ClipRRect(
         borderRadius: BorderRadius.circular(26),
         child: SizedBox(
@@ -249,7 +249,7 @@ class _ScenePreview extends StatelessWidget {
               bottom: 14,
               right: 18,
               child: Text(
-                layers.isEmpty ? 'Your soundscape appears here' : '${layers.length} layered sound${layers.length == 1 ? '' : 's'}',
+                layers.isEmpty ? 'Your soundscape appears here' : 'Your soundscape',
                 style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w300),
               ),
             ),

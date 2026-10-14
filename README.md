@@ -18,11 +18,11 @@ model using RevenueCat.
 - Audio (`lib/services/audio`): one looping `just_audio` player per layer, smoothed per-layer gain, headroom against clipping,
   master volume, audio-focus/interruption/ducking/headphone-unplug handling (`audio_session`), foreground service +
   lock-screen/notification controls (`audio_service`), sleep timer with quadratic fade-out that runs in the audio layer (not the UI).
-- 12 bundled **original synthesized** sounds (rain, thunder, ocean, wind, stream, crickets, fireplace, white/pink/brown noise).
-- Streaming (HTTPS, 3 retries) and resumable-less downloads to app-private storage with progress, cancel, retry, delete, storage usage —
+- 49 bundled **original synthesized** sounds in 5 categories (rain & thunder, ocean, wind & nature, noise, cozy), all free; see docs/SOUND_LIBRARY.md.
+- Streaming (HTTPS, 3 retries) and downloads to app-private storage with progress, cancel, retry, delete and storage usage —
   active only for catalog entries that have an `https` URL and `offlineAllowed: true` (none in this build; see docs/REMAINING_WORK.md).
 - Persistence: favorites, recents, mixes, settings, download index (`shared_preferences`); "Erase all local data".
-- Freemium (`PlaybackActions` is the single gate): premium sounds/presets locked; layer, saved-mix and download caps differ by tier.
+- Freemium infrastructure (`PlaybackActions` + `lib/app/feature_gates.dart`): **everything is free at launch**; no sound or mixer feature is locked. Gates can be switched on later in one file.
 - RevenueCat integration: store-sourced prices, purchase, restore, entitlement listener; unconfigured → free app, no fake unlock.
 - **Phase 2 changes**: branded launcher icon (adaptive + monochrome + legacy; iOS set), moon notification icon and artwork,
   Android 13+ notification permission flow, bedtime routine (mix + timer in one tap), remembered volumes, subscription status
@@ -44,7 +44,7 @@ lib/
   data/       catalog loader, local store
   services/   audio/ (engine, handler)  downloads/  billing/
   features/   home explore player mixer timer library premium settings onboarding shell common
-assets/       catalog.json, legal/, audio/ (generated)
+assets/       catalog.json, legal/, branding/, audio/ (generated)
 tool/         generate_audio.py, make_icons.py, bootstrap.sh, patch_platforms.py, branding/ (generated icons)
 ci/           GitHub Actions workflows (move into .github/workflows)
 test/, integration_test/

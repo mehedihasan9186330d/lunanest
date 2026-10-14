@@ -116,7 +116,7 @@ class HomeScreen extends ConsumerWidget {
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
               children: [
-                for (final c in catalog.categories) _CategoryCard(category: c, count: catalog.inCategory(c.id).length),
+                for (final c in catalog.categories) _CategoryCard(category: c),
               ],
             ),
             if (favs.isNotEmpty) ...[
@@ -234,7 +234,7 @@ class _MixCard extends ConsumerWidget {
     final colors = CategoryStyle.of(firstCat).colors;
     return Semantics(
       button: true,
-      label: '${mix.name}, mix of ${mix.layers.length} sounds${locked ? ', Premium' : ''}',
+      label: '${mix.name}, layered mix${locked ? ', Premium' : ''}',
       excludeSemantics: true,
       onTap: () => playMixAndOpen(context, ref, mix, catalog),
       child: SizedBox(
@@ -271,7 +271,7 @@ class _MixCard extends ConsumerWidget {
               child: IgnorePointer(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
                   Text(mix.name, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500)),
-                  Text('${mix.layers.length} layered sounds', style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                  const Text('Layered mix', style: TextStyle(color: Colors.white70, fontSize: 12)),
                 ]),
               ),
             ),
@@ -289,16 +289,15 @@ class _MixCard extends ConsumerWidget {
 }
 
 class _CategoryCard extends StatelessWidget {
-  const _CategoryCard({required this.category, required this.count});
+  const _CategoryCard({required this.category});
   final SoundCategory category;
-  final int count;
 
   @override
   Widget build(BuildContext context) {
     final style = CategoryStyle.of(category.id);
     return Semantics(
       button: true,
-      label: '${category.title}, $count sounds',
+      label: category.title,
       excludeSemantics: true,
       onTap: () => context.go('/explore/category/${category.id}'),
       child: GlassCard(
@@ -319,7 +318,6 @@ class _CategoryCard extends StatelessWidget {
           Expanded(
             child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(category.title, maxLines: 2, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.titleSmall),
-              Text('$count sounds', style: Theme.of(context).textTheme.bodySmall),
             ]),
           ),
         ]),

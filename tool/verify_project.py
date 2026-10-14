@@ -166,6 +166,30 @@ for f in files:
             if nm and nm.group(1) not in ctor_params[cls] and "{" not in a.split(":")[0]:
                 errors.append(f"{f}: {cls}(...) has no parameter named '{nm.group(1)}' (has: {sorted(ctor_params[cls])})")
 
+# every catalog sound must have a generator entry (and vice versa) in tool/generate_audio.py
+if os.path.exists("assets/catalog.json") and os.path.exists("tool/generate_audio.py"):
+    gen = open("tool/generate_audio.py", encoding="utf-8").read()
+    registry = gen[gen.index("SOUNDS = {"):]
+    registry = registry[:registry.index("\n}\n")]
+    gen_ids = set(re.findall(r'^\s*"(\w+)":\s*\(', registry, re.M))
+    cat = json.load(open("assets/catalog.json"))
+    cat_ids = [x["id"] for x in cat["sounds"]]
+    if len(cat_ids) != len(set(cat_ids)):
+        errors.append("assets/catalog.json has duplicate sound ids")
+    for i in cat_ids:
+        if i not in gen_ids:
+            errors.append(f"catalog sound '{i}' has no generator entry in tool/generate_audio.py")
+    for i in sorted(gen_ids - set(cat_ids)):
+        errors.append(f"generator makes '{i}' but it is not in assets/catalog.json")
+    cats = {c["id"] for c in cat["categories"]}
+    for x in cat["sounds"]:
+        if x["category"] not in cats:
+            errors.append(f"sound '{x['id']}' uses unknown category '{x['category']}'")
+        if x.get("premium"):
+            errors.append(f"sound '{x['id']}' is marked premium (all sounds must stay free)")
+        if x.get("asset") != f"assets/audio/{x['id']}.wav":
+            errors.append(f"sound '{x['id']}' asset path should be assets/audio/{x['id']}.wav")
+
 # catalog assets
 if os.path.exists("assets/catalog.json") and os.path.isdir("assets/audio") and glob.glob("assets/audio/*.wav"):
     for s in json.load(open("assets/catalog.json"))["sounds"]:
