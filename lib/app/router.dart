@@ -16,6 +16,26 @@ import '../features/shell/main_shell.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
+/// Fade + gentle rise for full-screen routes (player, premium). Instant when the
+/// system asks to reduce motion.
+CustomTransitionPage<void> _riseIn(GoRouterState state, Widget child) => CustomTransitionPage<void>(
+      key: state.pageKey,
+      child: child,
+      transitionDuration: const Duration(milliseconds: 420),
+      reverseTransitionDuration: const Duration(milliseconds: 320),
+      transitionsBuilder: (context, animation, secondary, child) {
+        if (MediaQuery.of(context).disableAnimations) return child;
+        final curved = CurvedAnimation(parent: animation, curve: Curves.easeOutCubic, reverseCurve: Curves.easeInCubic);
+        return FadeTransition(
+          opacity: curved,
+          child: SlideTransition(
+            position: Tween<Offset>(begin: const Offset(0, 0.08), end: Offset.zero).animate(curved),
+            child: child,
+          ),
+        );
+      },
+    );
+
 GoRouter buildRouter() => GoRouter(
       navigatorKey: rootNavigatorKey,
       initialLocation: '/',
@@ -69,12 +89,12 @@ GoRouter buildRouter() => GoRouter(
         GoRoute(
           path: '/player',
           parentNavigatorKey: rootNavigatorKey,
-          builder: (context, state) => const PlayerScreen(),
+          pageBuilder: (context, state) => _riseIn(state, const PlayerScreen()),
         ),
         GoRoute(
           path: '/premium',
           parentNavigatorKey: rootNavigatorKey,
-          builder: (context, state) => const PremiumScreen(),
+          pageBuilder: (context, state) => _riseIn(state, const PremiumScreen()),
         ),
       ],
     );

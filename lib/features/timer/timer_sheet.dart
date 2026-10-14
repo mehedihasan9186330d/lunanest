@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/providers.dart';
 import '../../core/format.dart';
+import '../../ui/timer_ring.dart';
 
 Future<void> showTimerSheet(BuildContext context) => showModalBottomSheet<void>(
       context: context,
@@ -48,9 +49,20 @@ class _TimerSheetState extends ConsumerState<_TimerSheet> {
             Text('Start a sound first, then set the timer.', style: theme.textTheme.bodyMedium)
           else if (remaining != null) ...[
             const SizedBox(height: 12),
-            Center(child: Text(formatDuration(remaining), style: theme.textTheme.displaySmall, semanticsLabel: '${remaining.inMinutes} minutes remaining')),
-            Center(child: Text('until sound fades out', style: theme.textTheme.bodySmall)),
-            const SizedBox(height: 12),
+            Center(
+              child: Semantics(
+                label: '${remaining.inMinutes} minutes remaining',
+                child: TimerRing(
+                  size: 170,
+                  progress: engine.timerTotal > Duration.zero ? remaining.inMilliseconds / engine.timerTotal.inMilliseconds : 0,
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    Text(formatDuration(remaining), style: theme.textTheme.headlineMedium),
+                    Text('until fade-out', style: theme.textTheme.bodySmall),
+                  ]),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(onPressed: engine.cancelTimer, child: const Text('Cancel timer')),

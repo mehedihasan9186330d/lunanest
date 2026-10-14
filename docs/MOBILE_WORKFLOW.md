@@ -43,10 +43,13 @@ Never put these in source files.
   Play needs a signed App Bundle with your upload key (see GOOGLE_PLAY_RELEASE_CHECKLIST.md). Creating a keystore
   without a computer is possible in CI (a one-off workflow running `keytool`) — ask Claude to generate it when you get there.
 
-## Updating an existing repo (for a later `lunanest.zip` update)
-1. In GitHub (browser, "Desktop site" if the upload button is hidden): *Add file → Upload files* → choose the new `lunanest.zip`
-   (keep the name `lunanest.zip`, do not unzip). Commit.
-2. The **Unpack project** workflow runs and overwrites the changed files (it uses `unzip -o`), then deletes the zip.
-3. Actions → **Android build** → Run workflow. Install the new APK from Releases.
-Update zips contain only changed/new files; `lunanest_full.zip` contains everything (rename it to `lunanest.zip` for a fresh repo).
-If the unpack run fails, open it in Actions and read the red step.
+## Updating an existing repo
+**Always upload the COMPLETE project zip.** (An earlier "changed files only" zip depended on a previous update that your repo
+did not have, which caused missing-file build errors.)
+1. In GitHub (browser, "Desktop site" if the upload button is hidden): *Add file → Upload files* → choose `lunanest.zip`
+   (keep that exact name, do not unzip). Commit.
+2. The **Unpack project** workflow runs, overwrites files with the ones in the zip (`unzip -o`), then deletes the zip.
+   Files that exist in your repo but not in the zip are left alone.
+3. Actions → **Android build** → Run workflow. The first step of the build now runs `tool/verify_project.py`; if any
+   file is missing it stops immediately and lists exactly what is missing.
+4. Install the new APK from Releases.

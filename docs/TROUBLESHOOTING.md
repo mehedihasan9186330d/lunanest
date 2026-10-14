@@ -10,3 +10,5 @@
 | App installs but no sound | Audio assets missing | Check "Generate original audio assets" step ran before `flutter build` |
 | Notification doesn't show (Android 13+) | POST_NOTIFICATIONS runtime permission | Grant in system settings; add a runtime request flow |
 | Paywall says "not configured" | No RevenueCat key was passed | Add secret `REVENUECAT_ANDROID_KEY`, re-run build |
+| `Error: Not found: 'lib/ui/....dart'` / `CategoryStyle.accent` not defined | An older project + a partial update zip | Upload the complete `lunanest.zip` (see MOBILE_WORKFLOW.md). `tool/verify_project.py` reports exactly what is missing |
+| `PROJECT VERIFICATION FAILED` in the build log | Files missing or inconsistent | Same as above; the message lists each problem |

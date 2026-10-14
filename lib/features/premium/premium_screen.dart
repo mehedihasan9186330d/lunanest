@@ -150,8 +150,8 @@ class _PremiumScreenState extends ConsumerState<PremiumScreen> {
   List<Widget> _offers(BillingService billing, ThemeData theme) {
     switch (billing.status) {
       case BillingStatus.unconfigured:
-        return const [
-          GlassCard(
+        return [
+          const GlassCard(
             child: Text('Subscriptions are not set up in this build, so purchases are unavailable. Everything works normally without them.'),
           ),
         ];

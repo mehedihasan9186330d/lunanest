@@ -15,7 +15,7 @@
 | App icon / launcher artwork | Default Flutter icon is used until replaced | Provide 1024×1024 PNG; ask Claude for `flutter_launcher_icons` setup |
 
 ## Known limitations / not built
-- Artwork is gradient + icon placeholders (no photography).
+- Artwork is now code-drawn animated scenes (Phase 1), not photography.
 - Search is merged into the Explore screen; Restore Purchases lives in Premium and Settings (no dedicated screen).
 - No remote catalog: catalog.json is bundled (update the app to change it). A remote catalog fetch is a straightforward next step.
 - No Wi-Fi-only download setting (needs connectivity plugin); no storage-quota query.

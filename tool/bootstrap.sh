@@ -4,6 +4,9 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# Fail fast, with a clear message, if files are missing (e.g. a partial update zip).
+python3 tool/verify_project.py
+
 if [ ! -d android ] || [ ! -d ios ]; then
   echo "Generating platform folders..."
   BAK="$(mktemp -d)"

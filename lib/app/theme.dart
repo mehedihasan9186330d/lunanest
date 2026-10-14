@@ -26,20 +26,43 @@ ThemeData buildLightTheme() {
   return _base(scheme, const Color(0xFFF5F4FF));
 }
 
+TextTheme _typography(ColorScheme scheme) {
+  // System font with refined weights/spacing. (No bundled custom font yet: it would
+  // need a licensed font file added to assets/ and pubspec.yaml.)
+  final t = ThemeData(brightness: scheme.brightness).textTheme;
+  return t
+      .copyWith(
+        displaySmall: t.displaySmall?.copyWith(fontWeight: FontWeight.w200, letterSpacing: 1.0),
+        headlineMedium: t.headlineMedium?.copyWith(fontWeight: FontWeight.w300, letterSpacing: -0.4, height: 1.15),
+        headlineSmall: t.headlineSmall?.copyWith(fontWeight: FontWeight.w300, letterSpacing: -0.2, height: 1.2),
+        titleLarge: t.titleLarge?.copyWith(fontWeight: FontWeight.w500, letterSpacing: 0.1),
+        titleMedium: t.titleMedium?.copyWith(fontWeight: FontWeight.w500, letterSpacing: 0.15),
+        titleSmall: t.titleSmall?.copyWith(fontWeight: FontWeight.w500, letterSpacing: 0.2),
+        labelLarge: t.labelLarge?.copyWith(fontWeight: FontWeight.w600, letterSpacing: 0.4),
+        bodyMedium: t.bodyMedium?.copyWith(height: 1.4),
+        bodySmall: t.bodySmall?.copyWith(height: 1.35, letterSpacing: 0.2),
+      )
+      .apply(bodyColor: scheme.onSurface, displayColor: scheme.onSurface);
+}
+
+// Scaffolds are transparent: the NightSky backdrop (see app.dart) shows through.
 ThemeData _base(ColorScheme scheme, Color background) {
+  final text = _typography(scheme);
   return ThemeData(
     useMaterial3: true,
     colorScheme: scheme,
-    scaffoldBackgroundColor: background,
+    textTheme: text,
+    scaffoldBackgroundColor: Colors.transparent,
     appBarTheme: AppBarTheme(
-      backgroundColor: background,
+      backgroundColor: Colors.transparent,
       foregroundColor: scheme.onSurface,
       elevation: 0,
       scrolledUnderElevation: 0,
       centerTitle: false,
+      titleTextStyle: text.titleLarge,
     ),
     navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: scheme.surface,
+      backgroundColor: scheme.surface.withAlpha(240),
       indicatorColor: scheme.primary.withAlpha(60),
       labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
     ),
