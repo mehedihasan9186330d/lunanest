@@ -8,7 +8,7 @@ import '../../core/env.dart';
 
 enum BillingStatus { unconfigured, loading, ready, error }
 
-enum PurchaseOutcome { success, cancelled, pending, failed }
+enum PurchaseOutcome { success, cancelled, pending, notEntitled, failed }
 
 /// Subscriptions via RevenueCat (wraps Google Play Billing and StoreKit).
 ///
@@ -21,6 +21,10 @@ enum PurchaseOutcome { success, cancelled, pending, failed }
 class BillingService extends ChangeNotifier {
   BillingStatus status = BillingStatus.unconfigured;
   bool isPremium = false;
+  bool expired = false; // had Premium before, no longer active
+  bool willRenew = false; // false while active = cancelled, ends at [expiresAt]
+  bool billingIssue = false; // payment problem detected by the store
+  DateTime? expiresAt;
   Offering? offering;
   String? error;
 
@@ -67,15 +71,33 @@ class BillingService extends ChangeNotifier {
   }
 
   void _apply(CustomerInfo info) {
-    isPremium = info.entitlements.active.containsKey(Env.premiumEntitlement);
+    final active = info.entitlements.active[Env.premiumEntitlement];
+    final ever = info.entitlements.all[Env.premiumEntitlement];
+    isPremium = active != null;
+    willRenew = active?.willRenew ?? false;
+    billingIssue = active?.billingIssueDetectedAt != null;
+    expiresAt = DateTime.tryParse(active?.expirationDate ?? '')?.toLocal();
+    expired = active == null && ever != null;
     notifyListeners();
+  }
+
+  /// Re-check entitlement + offerings (called when the app returns to the foreground).
+  Future<void> refresh() async {
+    if (status != BillingStatus.ready) return;
+    try {
+      _apply(await Purchases.getCustomerInfo());
+      if (!hasProducts) await refreshOfferings();
+    } catch (_) {
+      // Offline: keep the SDK's last known state.
+    }
   }
 
   Future<PurchaseOutcome> purchase(Package p) async {
     try {
       final info = await Purchases.purchasePackage(p);
       _apply(info);
-      return isPremium ? PurchaseOutcome.success : PurchaseOutcome.pending;
+      // Success is only reported when the store-verified entitlement is active.
+      return isPremium ? PurchaseOutcome.success : PurchaseOutcome.notEntitled;
     } on PlatformException catch (e) {
       final code = PurchasesErrorHelper.getErrorCode(e);
       if (code == PurchasesErrorCode.purchaseCancelledError) return PurchaseOutcome.cancelled;

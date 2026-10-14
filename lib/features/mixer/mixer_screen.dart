@@ -4,11 +4,16 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/playback_actions.dart';
 import '../../app/providers.dart';
+import '../../core/category_style.dart';
 import '../../core/format.dart';
 import '../../domain/models.dart';
 import '../../services/audio/audio_engine.dart';
 import '../common/ui_helpers.dart';
+import '../../ui/glass_card.dart';
+import '../../ui/reveal.dart';
+import '../../ui/scene_view.dart';
 import '../common/widgets.dart';
+import '../home/home_screen.dart' show sceneLayersFromEngine;
 import '../timer/timer_sheet.dart';
 
 class MixerScreen extends ConsumerWidget {
@@ -37,9 +42,11 @@ class MixerScreen extends ConsumerWidget {
         return ListView(padding: const EdgeInsets.fromLTRB(16, 0, 16, 24), children: [
           Text('Layer up to ${actions.maxLayers} sounds. Each has its own volume.', style: Theme.of(context).textTheme.bodyMedium),
           const SizedBox(height: 12),
+          Reveal(child: _ScenePreview(engine: engine)),
+          const SizedBox(height: 14),
           if (layers.isEmpty)
             const Padding(
-              padding: EdgeInsets.symmetric(vertical: 24),
+              padding: EdgeInsets.symmetric(vertical: 16),
               child: EmptyState(icon: Icons.tune, title: 'Your mix is empty', message: 'Add a sound, or start from a preset below.'),
             )
           else ...[
@@ -83,7 +90,7 @@ class MixerScreen extends ConsumerWidget {
           Wrap(spacing: 8, runSpacing: 8, children: [
             for (final m in catalog.presets)
               ActionChip(
-                avatar: Icon(catalog.mixNeedsPremium(m) && !ref.watch(isPremiumProvider) ? Icons.lock_outline : Icons.layers, size: 18),
+                avatar: Icon(ref.watch(featureGatesProvider).mixLocked(m, catalog, ref.watch(isPremiumProvider)) ? Icons.lock_outline : Icons.layers, size: 18),
                 label: Text(m.name),
                 onPressed: () async {
                   final r = await ref.read(playbackActionsProvider).playMix(m, catalog);
@@ -138,8 +145,7 @@ class MixerScreen extends ConsumerWidget {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(SnackBar(
-          content: Text('You can save up to ${actions.maxSavedMixes} mixes on your plan.'),
-          action: SnackBarAction(label: 'See Premium', onPressed: () => context.push('/premium')),
+          content: Text('You have reached the limit of ${actions.maxSavedMixes} saved mixes. Delete one to save another.'),
         ));
       return;
     }
@@ -164,31 +170,92 @@ class _LayerCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final engine = ref.read(engineProvider);
     final theme = Theme.of(context);
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.fromLTRB(12, 8, 4, 4),
-      decoration: BoxDecoration(color: theme.colorScheme.surface, borderRadius: BorderRadius.circular(18)),
-      child: Column(children: [
-        Row(children: [
-          GradientIcon(categoryId: layer.sound.categoryId, size: 40),
-          const SizedBox(width: 12),
-          Expanded(child: Text(layer.sound.title, style: theme.textTheme.titleSmall)),
-          if (layer.status == LayerStatus.loading)
-            const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)),
-          if (layer.status == LayerStatus.error)
-            TextButton(onPressed: () => engine.retryLayer(layer.sound.id), child: const Text('Retry')),
-          IconButton(
-            tooltip: 'Remove ${layer.sound.title}',
-            icon: const Icon(Icons.close),
-            onPressed: () => engine.removeLayer(layer.sound.id),
+    final accent = CategoryStyle.of(layer.sound.categoryId).accent;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: GlassCard(
+        padding: const EdgeInsets.fromLTRB(12, 10, 4, 2),
+        child: Column(children: [
+          Row(children: [
+            SceneThumb(sound: layer.sound, size: 44),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(layer.sound.title, style: theme.textTheme.titleSmall),
+                Text('${(layer.volume * 100).round()}%', style: theme.textTheme.bodySmall),
+              ]),
+            ),
+            if (layer.status == LayerStatus.loading)
+              const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)),
+            if (layer.status == LayerStatus.error)
+              TextButton(onPressed: () => engine.retryLayer(layer.sound.id), child: const Text('Retry')),
+            IconButton(
+              tooltip: 'Remove ${layer.sound.title}',
+              icon: const Icon(Icons.close),
+              onPressed: () => engine.removeLayer(layer.sound.id),
+            ),
+          ]),
+          SliderTheme(
+            data: SliderTheme.of(context).copyWith(activeTrackColor: accent, thumbColor: accent, inactiveTrackColor: accent.withAlpha(50)),
+            child: Slider(
+              value: layer.volume,
+              onChanged: (v) => engine.setLayerVolume(layer.sound.id, v),
+              semanticFormatterCallback: (v) => '${layer.sound.title} volume ${(v * 100).round()} percent',
+            ),
           ),
         ]),
-        Slider(
-          value: layer.volume,
-          onChanged: (v) => engine.setLayerVolume(layer.sound.id, v),
-          semanticFormatterCallback: (v) => '${layer.sound.title} volume ${(v * 100).round()} percent',
+      ),
+    );
+  }
+}
+
+/// Live blended preview of every layer in the mix (animated while playing).
+class _ScenePreview extends StatelessWidget {
+  const _ScenePreview({required this.engine});
+  final AudioEngine engine;
+
+  @override
+  Widget build(BuildContext context) {
+    final layers = engine.layers;
+    final colors = CategoryStyle.of(layers.isEmpty ? '' : layers.first.sound.categoryId).colors;
+    return Semantics(
+      container: true,
+      label: layers.isEmpty
+          ? 'Soundscape preview, empty'
+          : 'Soundscape preview, ${layers.length} layers, ${engine.isPlaying ? 'playing' : 'paused'}',
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(26),
+        child: SizedBox(
+          height: 150,
+          child: Stack(fit: StackFit.expand, children: [
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(colors: colors, begin: Alignment.topLeft, end: Alignment.bottomRight),
+              ),
+            ),
+            SceneView(layers: sceneLayersFromEngine(layers), animate: engine.isPlaying),
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0x00000000), Color(0xAA070B24)],
+                  stops: [0.35, 1],
+                ),
+              ),
+            ),
+            Positioned(
+              left: 18,
+              bottom: 14,
+              right: 18,
+              child: Text(
+                layers.isEmpty ? 'Your soundscape appears here' : '${layers.length} layered sound${layers.length == 1 ? '' : 's'}',
+                style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w300),
+              ),
+            ),
+          ]),
         ),
-      ]),
+      ),
     );
   }
 }

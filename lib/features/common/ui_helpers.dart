@@ -18,10 +18,7 @@ void showGateMessage(BuildContext context, GateResult r) {
         action: SnackBarAction(label: 'See Premium', onPressed: () => context.push('/premium')),
       ));
     case GateResult.layerLimit:
-      messenger.showSnackBar(SnackBar(
-        content: const Text('Layer limit reached for your plan.'),
-        action: SnackBarAction(label: 'See Premium', onPressed: () => context.push('/premium')),
-      ));
+      messenger.showSnackBar(const SnackBar(content: Text('You have reached the maximum number of layers.')));
   }
 }
 

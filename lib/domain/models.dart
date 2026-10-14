@@ -75,6 +75,16 @@ class Mix {
       );
 }
 
+/// "Start this mix and this sleep timer together" – one tap at bedtime.
+class BedtimeRoutine {
+  const BedtimeRoutine({required this.mixId, required this.minutes});
+  final String mixId; // a preset id or a saved mix id
+  final int minutes;
+  Map<String, dynamic> toJson() => {'mixId': mixId, 'minutes': minutes};
+  factory BedtimeRoutine.fromJson(Map<String, dynamic> j) =>
+      BedtimeRoutine(mixId: j['mixId'] as String, minutes: (j['minutes'] as num).toInt());
+}
+
 class AppSettings {
   const AppSettings({
     this.themeMode = ThemeMode.dark,

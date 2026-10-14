@@ -22,6 +22,7 @@ dependencies:
   dio: ^5.4.3
   purchases_flutter: ^8.0.0   # 8.x: purchasePackage returns CustomerInfo (9.x changed this)
   url_launcher: ^6.3.0
+  permission_handler: ">=11.3.1 <13.0.0"   # Android 13+ notification permission for the playback notification
 
 dev_dependencies:
   flutter_test:
@@ -36,3 +37,4 @@ flutter:
     - assets/catalog.json
     - assets/audio/
     - assets/legal/
+    - assets/branding/

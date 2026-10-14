@@ -42,3 +42,11 @@ Never put these in source files.
 - The APK from this workflow is signed with a **debug key** — fine for testing, **not for Google Play**.
   Play needs a signed App Bundle with your upload key (see GOOGLE_PLAY_RELEASE_CHECKLIST.md). Creating a keystore
   without a computer is possible in CI (a one-off workflow running `keytool`) — ask Claude to generate it when you get there.
+
+## Updating an existing repo (for a later `lunanest.zip` update)
+1. In GitHub (browser, "Desktop site" if the upload button is hidden): *Add file → Upload files* → choose the new `lunanest.zip`
+   (keep the name `lunanest.zip`, do not unzip). Commit.
+2. The **Unpack project** workflow runs and overwrites the changed files (it uses `unzip -o`), then deletes the zip.
+3. Actions → **Android build** → Run workflow. Install the new APK from Releases.
+Update zips contain only changed/new files; `lunanest_full.zip` contains everything (rename it to `lunanest.zip` for a fresh repo).
+If the unpack run fails, open it in Actions and read the red step.

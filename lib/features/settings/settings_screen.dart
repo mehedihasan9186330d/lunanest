@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../app/providers.dart';
 
@@ -60,6 +61,12 @@ class SettingsScreen extends ConsumerWidget {
             onChanged: (v) => ref.read(settingsProvider.notifier).update(settings.copyWith(fadeSeconds: v.round())),
           ),
         ),
+        ListTile(
+          leading: const Icon(Icons.notifications_active_outlined),
+          title: const Text('Background playback & notifications'),
+          subtitle: const Text('Keep sound playing with the screen off'),
+          onTap: () => _showPlaybackHelp(context),
+        ),
         const Divider(),
         ListTile(leading: const Icon(Icons.privacy_tip_outlined), title: const Text('Privacy Policy'), onTap: () => context.go('/settings/privacy')),
         ListTile(leading: const Icon(Icons.description_outlined), title: const Text('Terms of Use'), onTap: () => context.go('/settings/terms')),
@@ -102,8 +109,36 @@ class SettingsScreen extends ConsumerWidget {
     ref.invalidate(favoritesProvider);
     ref.invalidate(recentsProvider);
     ref.invalidate(mixesProvider);
+    ref.invalidate(routineProvider);
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Local data erased.')));
     }
+  }
+
+  Future<void> _showPlaybackHelp(BuildContext context) async {
+    await showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Background playback'),
+        content: const SingleChildScrollView(
+          child: Text(
+            'LunaNest keeps playing when you switch apps or lock your phone, with controls in the notification and on the lock screen.\n\n'
+            'If the sound stops by itself or the notification is missing:\n'
+            '• Allow notifications for LunaNest.\n'
+            '• Set battery usage for LunaNest to "Unrestricted" (some phones, e.g. Xiaomi, Huawei, Samsung, stop background apps aggressively).',
+          ),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Close')),
+          FilledButton(
+            onPressed: () {
+              openAppSettings();
+              Navigator.pop(ctx);
+            },
+            child: const Text('Open system settings'),
+          ),
+        ],
+      ),
+    );
   }
 }

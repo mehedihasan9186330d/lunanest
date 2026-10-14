@@ -6,8 +6,10 @@ Android: permissions, audio_service service/receiver, AudioServiceActivity.
 iOS: UIBackgroundModes=audio, display name, Podfile platform.
 """
 import glob
+import json
 import os
 import re
+import shutil
 import sys
 
 
@@ -94,10 +96,43 @@ def patch_podfile():
         print("Patched Podfile platform")
 
 
+def apply_android_branding():
+    """Adaptive launcher icon (+monochrome), legacy icons and the notification icon."""
+    src = "tool/branding/android/res"
+    dst = "android/app/src/main/res"
+    if not os.path.isdir(src):
+        print("WARNING: tool/branding/android/res missing; launcher icon not replaced", file=sys.stderr)
+        return
+    shutil.copytree(src, dst, dirs_exist_ok=True)
+    print("Applied Android launcher + notification icons")
+
+
+def apply_ios_icons():
+    d = "ios/Runner/Assets.xcassets/AppIcon.appiconset"
+    cj = os.path.join(d, "Contents.json")
+    if not os.path.exists(cj):
+        print("WARNING: iOS AppIcon set not found", file=sys.stderr)
+        return
+    data = json.load(open(cj))
+    for img in data.get("images", []):
+        name = img.get("filename")
+        if not name:
+            continue
+        px = round(float(img["size"].split("x")[0]) * int(img["scale"].rstrip("x")))
+        src = f"tool/branding/ios/ios_{px}.png"
+        if os.path.exists(src):
+            shutil.copyfile(src, os.path.join(d, name))
+        else:
+            print(f"WARNING: no icon source for {px}px ({name})", file=sys.stderr)
+    print("Applied iOS app icons")
+
+
 if __name__ == "__main__":
     if os.path.isdir("android"):
         patch_android_manifest()
         patch_main_activity()
+        apply_android_branding()
     if os.path.isdir("ios"):
         patch_info_plist()
         patch_podfile()
+        apply_ios_icons()

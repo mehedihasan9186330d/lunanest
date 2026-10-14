@@ -31,9 +31,21 @@ class ActiveLayer {
 /// Sample-accurate sync between layers is NOT guaranteed; for ambient loops this is
 /// inaudible, but verify on devices (see docs/TESTING.md).
 class AudioEngine extends ChangeNotifier {
-  AudioEngine({required this.localPathFor});
+  AudioEngine({
+    required this.localPathFor,
+    double initialMasterVolume = 0.8,
+    Map<String, double>? soundVolumes,
+    this.onPrefsChanged,
+  })  : _master = initialMasterVolume.clamp(0.0, 1.0).toDouble(),
+        _soundVolumes = {...?soundVolumes};
 
   final LocalPathLookup localPathFor;
+
+  /// Called (debounced) when master volume or a sound's remembered volume changes,
+  /// so the app can persist the user's volume preferences.
+  final void Function(double master, Map<String, double> soundVolumes)? onPrefsChanged;
+  final Map<String, double> _soundVolumes;
+  Timer? _prefsTimer;
 
   static const hardLayerLimit = 6;
 
@@ -41,7 +53,7 @@ class AudioEngine extends ChangeNotifier {
   AudioSession? _session;
   final List<StreamSubscription<dynamic>> _subs = [];
 
-  double _master = 0.8;
+  double _master;
   bool _playing = false;
   double _fade = 1.0; // pause/resume fade
   double _timerFactor = 1.0; // sleep-timer fade
@@ -66,6 +78,15 @@ class AudioEngine extends ChangeNotifier {
   bool get isLoading => _layers.values.any((l) => l.status == LayerStatus.loading);
   bool get hasError => _layers.values.any((l) => l.status == LayerStatus.error);
   bool containsSound(String id) => _layers.containsKey(id);
+
+  /// Last volume the user chose for this sound (or [fallback]).
+  double volumeFor(String id, [double fallback = 0.7]) => _soundVolumes[id] ?? fallback;
+
+  void _schedulePrefsSave() {
+    if (onPrefsChanged == null) return;
+    _prefsTimer?.cancel();
+    _prefsTimer = Timer(const Duration(milliseconds: 600), () => onPrefsChanged!(_master, Map.of(_soundVolumes)));
+  }
 
   String? get nowPlayingTitle {
     if (_layers.isEmpty) return null;
@@ -131,6 +152,7 @@ class AudioEngine extends ChangeNotifier {
     _smoothTimer?.cancel();
     _pauseTimer?.cancel();
     _timerTicker?.cancel();
+    _prefsTimer?.cancel();
     for (final s in _subs) {
       s.cancel();
     }
@@ -234,7 +256,7 @@ class AudioEngine extends ChangeNotifier {
       return;
     }
     await _clearLayers();
-    final loading = addLayer(s, volume: 0.8, maxLayers: hardLayerLimit);
+    final loading = addLayer(s, volume: volumeFor(s.id, 0.8), maxLayers: hardLayerLimit);
     await play();
     await loading;
   }
@@ -341,12 +363,15 @@ class AudioEngine extends ChangeNotifier {
     final l = _layers[id];
     if (l == null) return;
     l.volume = v.clamp(0.0, 1.0).toDouble();
+    _soundVolumes[id] = l.volume;
+    _schedulePrefsSave();
     _kick();
     _notify();
   }
 
   void setMasterVolume(double v) {
     _master = v.clamp(0.0, 1.0).toDouble();
+    _schedulePrefsSave();
     _kick();
     _notify();
   }

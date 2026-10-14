@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lunanest/app/feature_gates.dart';
 import 'package:lunanest/app/providers.dart';
 import 'package:lunanest/data/local_store.dart';
 import 'package:lunanest/domain/models.dart';
@@ -11,7 +12,7 @@ import 'package:lunanest/services/billing/billing_service.dart';
 import 'package:lunanest/services/downloads/download_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<Widget> harness(Widget child) async {
+Future<Widget> harness(Widget child, {FeatureGates gates = FeatureGates.launch}) async {
   SharedPreferences.setMockInitialValues({});
   final store = LocalStore(await SharedPreferences.getInstance());
   const catalog = Catalog(
@@ -29,6 +30,7 @@ Future<Widget> harness(Widget child) async {
       engineProvider.overrideWith((ref) => AudioEngine(localPathFor: (_) => null)),
       downloadsProvider.overrideWith((ref) => DownloadManager(store)),
       billingProvider.overrideWith((ref) => BillingService()),
+      featureGatesProvider.overrideWithValue(gates),
     ],
     child: MaterialApp(home: Scaffold(body: child)),
   );
@@ -44,9 +46,19 @@ void main() {
     expect(find.byIcon(Icons.lock_outline), findsNothing);
   });
 
-  testWidgets('Premium sounds show a lock for free users', (tester) async {
+  testWidgets('Premium-flagged sounds are NOT locked while everything is free (launch state)', (tester) async {
     await tester.pumpWidget(await harness(const SoundTile(
         sound: Sound(id: 'pro', title: 'Heavy Rain', categoryId: 'rain', assetPath: 'y.wav', premium: true))));
+    await tester.pumpAndSettle();
+    expect(find.byIcon(Icons.lock_outline), findsNothing);
+    expect(find.textContaining('Premium'), findsNothing);
+  });
+
+  testWidgets('When a gate is switched on, premium sounds lock for free users', (tester) async {
+    await tester.pumpWidget(await harness(
+      const SoundTile(sound: Sound(id: 'pro', title: 'Heavy Rain', categoryId: 'rain', assetPath: 'y.wav', premium: true)),
+      gates: const FeatureGates(lockPremiumSounds: true),
+    ));
     await tester.pumpAndSettle();
     expect(find.byIcon(Icons.lock_outline), findsOneWidget);
   });
@@ -63,7 +75,8 @@ void main() {
   testWidgets('Paywall never unlocks or fakes prices when billing is unconfigured', (tester) async {
     await tester.pumpWidget(await harness(const PremiumScreen()));
     await tester.pumpAndSettle();
-    expect(find.textContaining('not configured'), findsOneWidget);
+    expect(find.textContaining('not set up'), findsOneWidget);
+    expect(find.textContaining('free right now'), findsOneWidget);
     expect(find.text('Subscribe'), findsNothing);
     expect(find.text('Restore purchases'), findsOneWidget);
   });

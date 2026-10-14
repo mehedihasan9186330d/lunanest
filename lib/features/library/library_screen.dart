@@ -150,7 +150,7 @@ class _DownloadRow extends ConsumerWidget {
         icon: const Icon(Icons.download),
         onPressed: () {
           final actions = ref.read(playbackActionsProvider);
-          if (sound.premium && !ref.read(isPremiumProvider)) {
+          if (ref.read(featureGatesProvider).soundLocked(sound, ref.read(isPremiumProvider))) {
             showGateMessage(context, GateResult.needsPremium);
           } else if (dm.downloadedCount >= actions.maxDownloads) {
             showGateMessage(context, GateResult.layerLimit);

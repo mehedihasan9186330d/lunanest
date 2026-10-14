@@ -4,12 +4,13 @@ import 'audio_engine.dart';
 /// Bridges [AudioEngine] to the OS: notification, lock-screen controls and
 /// the Android foreground service (provided by audio_service).
 class LunaAudioHandler extends BaseAudioHandler {
-  LunaAudioHandler(this.engine) {
+  LunaAudioHandler(this.engine, {this.artUri}) {
     engine.addListener(_sync);
     _sync();
   }
 
   final AudioEngine engine;
+  final Uri? artUri; // LunaNest artwork shown in the notification / lock screen
   bool? _lastPlaying;
   bool? _lastHasLayers;
   String? _lastTitle;
@@ -28,6 +29,7 @@ class LunaAudioHandler extends BaseAudioHandler {
               title: title,
               album: 'LunaNest',
               artist: engine.nowPlayingSubtitle ?? 'Sleep & Relax',
+              artUri: artUri,
             ));
     }
 

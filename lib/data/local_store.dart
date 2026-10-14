@@ -56,5 +56,41 @@ class LocalStore {
 
   Future<void> saveDownloadsIndex(Map<String, dynamic> v) async => _p.setString(_downloads, jsonEncode(v));
 
+  double get masterVolume => (_p.getDouble('master_volume') ?? 0.8).clamp(0.0, 1.0).toDouble();
+  Future<void> saveMasterVolume(double v) async => _p.setDouble('master_volume', v);
+
+  Map<String, double> get soundVolumes {
+    final raw = _p.getString('sound_volumes');
+    if (raw == null) return {};
+    try {
+      return (jsonDecode(raw) as Map).map((k, v) => MapEntry(k as String, (v as num).toDouble()));
+    } catch (_) {
+      return {};
+    }
+  }
+
+  Future<void> saveSoundVolumes(Map<String, double> v) async => _p.setString('sound_volumes', jsonEncode(v));
+
+  BedtimeRoutine? get routine {
+    final raw = _p.getString('bedtime_routine');
+    if (raw == null) return null;
+    try {
+      return BedtimeRoutine.fromJson(Map<String, dynamic>.from(jsonDecode(raw) as Map));
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> saveRoutine(BedtimeRoutine? r) async {
+    if (r == null) {
+      await _p.remove('bedtime_routine');
+    } else {
+      await _p.setString('bedtime_routine', jsonEncode(r.toJson()));
+    }
+  }
+
+  bool get notificationPermissionAsked => _p.getBool('notif_perm_asked') ?? false;
+  Future<void> setNotificationPermissionAsked() async => _p.setBool('notif_perm_asked', true);
+
   Future<void> clearAll() async => _p.clear();
 }

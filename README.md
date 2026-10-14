@@ -24,7 +24,14 @@ model using RevenueCat.
 - Persistence: favorites, recents, mixes, settings, download index (`shared_preferences`); "Erase all local data".
 - Freemium (`PlaybackActions` is the single gate): premium sounds/presets locked; layer, saved-mix and download caps differ by tier.
 - RevenueCat integration: store-sourced prices, purchase, restore, entitlement listener; unconfigured → free app, no fake unlock.
+- **Phase 2 changes**: branded launcher icon (adaptive + monochrome + legacy; iOS set), moon notification icon and artwork,
+  Android 13+ notification permission flow, bedtime routine (mix + timer in one tap), remembered volumes, subscription status
+  handling (renewal / cancelled / billing issue / expired), and **all sounds and features free** with a one-file switch for
+  future gating (`lib/app/feature_gates.dart`). See docs/PHASE2_STATUS.md.
 - Theme: dark (default), light, system; text scaling, reduced-motion, tooltips/semantics labels.
+- **Phase 1 visual redesign** (code-drawn, offline): midnight-sky backdrop, animated per-sound scenes (rain, storm, ocean, river,
+  forest, fireplace, noise, wind), redesigned Home / Now Playing / Mixer / mini-player / splash, timer ring. See docs/UI_REDESIGN.md.
+  Written but not yet compiled or visually verified.
 
 ## Project layout
 ```
@@ -32,12 +39,13 @@ lib/
   main.dart                      startup + dependency wiring
   app/        providers, router, theme, playback gating
   core/       env (dart-define), audio math, formatting, category styles
+  ui/         night sky, animated scenes, glass card, timer ring, moon mark
   domain/     models (Sound, Mix, Catalog, AppSettings)
   data/       catalog loader, local store
   services/   audio/ (engine, handler)  downloads/  billing/
   features/   home explore player mixer timer library premium settings onboarding shell common
 assets/       catalog.json, legal/, audio/ (generated)
-tool/         generate_audio.py, bootstrap.sh, patch_platforms.py
+tool/         generate_audio.py, make_icons.py, bootstrap.sh, patch_platforms.py, branding/ (generated icons)
 ci/           GitHub Actions workflows (move into .github/workflows)
 test/, integration_test/
 ```

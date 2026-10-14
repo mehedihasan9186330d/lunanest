@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' show ThemeMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/catalog_repository.dart';
+import 'feature_gates.dart';
 import '../data/local_store.dart';
 import '../domain/models.dart';
 import '../services/audio/audio_engine.dart';
@@ -19,6 +20,8 @@ final billingProvider = ChangeNotifierProvider<BillingService>((ref) => throw Un
 final engineProvider = ChangeNotifierProvider<AudioEngine>((ref) => ref.watch(audioHandlerProvider).engine);
 
 final catalogProvider = FutureProvider<Catalog>((ref) => CatalogRepository.load());
+
+final featureGatesProvider = Provider<FeatureGates>((ref) => FeatureGates.launch);
 
 final isPremiumProvider = Provider<bool>((ref) => ref.watch(billingProvider).isPremium);
 
@@ -62,6 +65,18 @@ class RecentsNotifier extends StateNotifier<List<String>> {
 
 final recentsProvider =
     StateNotifierProvider<RecentsNotifier, List<String>>((ref) => RecentsNotifier(ref.watch(storeProvider)));
+
+class RoutineNotifier extends StateNotifier<BedtimeRoutine?> {
+  RoutineNotifier(this._store) : super(_store.routine);
+  final LocalStore _store;
+  void set(BedtimeRoutine? r) {
+    state = r;
+    _store.saveRoutine(r);
+  }
+}
+
+final routineProvider =
+    StateNotifierProvider<RoutineNotifier, BedtimeRoutine?>((ref) => RoutineNotifier(ref.watch(storeProvider)));
 
 class MixesNotifier extends StateNotifier<List<Mix>> {
   MixesNotifier(this._store) : super(_store.mixes);
