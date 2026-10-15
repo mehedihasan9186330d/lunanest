@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
+import 'rand.dart';
+
 /// Midnight-sky backdrop: deep navy → violet gradient with softly twinkling stars.
 /// Twinkle updates ~10 times per second (cheap on battery). Static when the system
 /// asks for reduced motion. In light theme it becomes a pale lavender gradient.
